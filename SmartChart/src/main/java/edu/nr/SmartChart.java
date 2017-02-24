@@ -19,6 +19,8 @@ import javafx.scene.Node;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.beans.binding.BooleanBinding;
 
@@ -30,6 +32,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 
+import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.geometry.Point2D;
@@ -57,6 +60,7 @@ public class SmartChart extends GenericSmartChart
         Button saveButton = new Button("Save Data");
         saveButton.setOnAction(event -> chart.save());
         add(saveButton, 0, 2, 3, 1);
+
 
         final Rectangle zoomRect = new Rectangle();
         zoomRect.setManaged(false);
@@ -99,12 +103,26 @@ public class SmartChart extends GenericSmartChart
         zoomButton.disableProperty().bind(disableControls);
         resetZoomButton.disableProperty().bind(chart.isAutoZooming);
 
+        Label label1 = new Label("Samples:");
+        TextField samples = new TextField();
+        HBox hb3 = new HBox();
+        hb3.getChildren().addAll(label1, samples);
+        hb3.setSpacing(10);
+
+        samples.setText( String.format("%d", chart.numberOfSamples) );
+        samples.setOnAction((ActionEvent e) -> {
+            if (samples.getText() != null && !samples.getText().isEmpty()) {
+                chart.numberOfSamples = Integer.parseInt(samples.getText());
+            }
+        });
 
         add(zoomButton, 0, 3, 3, 1);
 
         add(resetZoomButton, 0, 4, 3, 1);
 
         add(prepareToZoomButton, 0, 5, 3, 1);
+
+        add(hb, 0, 6, 3, 1);
     }
 
     @Override

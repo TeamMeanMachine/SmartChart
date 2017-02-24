@@ -47,7 +47,7 @@ class NRChart extends GenericNRChart
 
 
         this.series.getData().add(new Data(currentTime, x));
-        if (this.series.getData().size() > 10000) {
+        if (this.series.getData().size() > numberOfSamples) {
             this.series.getData().remove(0);
         }
     }

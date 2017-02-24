@@ -1,9 +1,6 @@
 package edu.nr;
 
-import javafx.beans.property.BooleanProperty;
-import javafx.beans.property.ObjectProperty;
-import javafx.beans.property.SimpleBooleanProperty;
-import javafx.beans.property.SimpleObjectProperty;
+import javafx.beans.property.*;
 import javafx.event.EventHandler;
 import javafx.geometry.Point2D;
 import javafx.scene.chart.LineChart;
@@ -19,6 +16,8 @@ public abstract class GenericNRChart<T> extends LineChart<Number, Number> {
     public long startTimeMillis;
 
     public BooleanProperty isAutoZooming;
+
+    public int numberOfSamples;
 
     GenericSmartChart chart;
 
@@ -37,8 +36,7 @@ public abstract class GenericNRChart<T> extends LineChart<Number, Number> {
 
         this.chart = chart;
 
-
-
+        numberOfSamples = 1000;
     }
 
     public void setAutoZooming(boolean val) {
