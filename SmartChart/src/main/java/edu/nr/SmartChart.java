@@ -21,7 +21,7 @@ import javafx.scene.chart.NumberAxis;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.GridPane;
+import javafx.scene.layout.*;
 import javafx.beans.binding.BooleanBinding;
 
 
@@ -32,7 +32,6 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 
-import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.geometry.Point2D;
@@ -51,16 +50,22 @@ public class SmartChart extends GenericSmartChart
     {
         super();
         chart = new NRChart(this);
-        add(chart, 0, 0, 3, 1);
+
+        ColumnConstraints column1 = new ColumnConstraints();
+        column1.setPercentWidth(100);
+        getColumnConstraints().addAll(column1); // we want 100% of width
+
+        RowConstraints row1 = new RowConstraints();
+        row1.setPercentHeight(100);
+        getRowConstraints().addAll(row1); // we want 100% of height
+
+        add(chart, 0, 0, 1, 1);
 
         Button resetButton = new Button("Reset Graph");
         resetButton.setOnAction(event -> chart.reset());
-        add(resetButton, 0, 1, 3, 1);
 
         Button saveButton = new Button("Save Data");
         saveButton.setOnAction(event -> chart.save());
-        add(saveButton, 0, 2, 3, 1);
-
 
         final Rectangle zoomRect = new Rectangle();
         zoomRect.setManaged(false);
@@ -116,13 +121,10 @@ public class SmartChart extends GenericSmartChart
             }
         });
 
-        add(zoomButton, 0, 3, 3, 1);
-
-        add(resetZoomButton, 0, 4, 3, 1);
-
-        add(prepareToZoomButton, 0, 5, 3, 1);
-
-        add(hb, 0, 6, 3, 1);
+        HBox hb = new HBox();
+        hb.getChildren().addAll(resetButton, saveButton, zoomButton, resetZoomButton, prepareToZoomButton, hb3);
+        hb.setSpacing(10);
+        add(hb, 0, 1, 1, 1);
     }
 
     @Override
