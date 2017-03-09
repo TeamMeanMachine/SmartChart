@@ -18,7 +18,10 @@ import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.control.Button;
+import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.RowConstraints;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 
@@ -35,15 +38,22 @@ public class SmartChartDouble extends GenericSmartChart
         setAlignment(Pos.CENTER);
 
         chart = new NRChartDouble(this);
+
+        ColumnConstraints column1 = new ColumnConstraints();
+        column1.setPercentWidth(100);
+        getColumnConstraints().addAll(column1); // we want 100% of width
+
+        RowConstraints row1 = new RowConstraints();
+        row1.setPercentHeight(100);
+        getRowConstraints().addAll(row1); // we want 100% of height
+
         add(chart, 0, 0);
 
         Button resetButton = new Button("Reset Graph");
         resetButton.setOnAction(event -> chart.reset());
-        add(resetButton, 0, 1, 3, 1);
 
         Button saveButton = new Button("Save Data");
         saveButton.setOnAction(event -> chart.save());
-        add(saveButton, 0, 2, 3, 1);
 
         final Rectangle zoomRect = new Rectangle();
         zoomRect.setManaged(false);
@@ -68,7 +78,6 @@ public class SmartChartDouble extends GenericSmartChart
         });
 
         final Button prepareToZoomButton = new Button("Prepare to zoom");
-
         prepareToZoomButton.setOnAction(event -> {
             if(chart.isAutoZooming()) {
                 chart.setAutoZooming(false);
@@ -79,19 +88,16 @@ public class SmartChartDouble extends GenericSmartChart
             }
         });
 
-
         final BooleanBinding disableControls =
                 zoomRect.widthProperty().lessThan(5)
                         .or(zoomRect.heightProperty().lessThan(5)).or(chart.isAutoZooming);
         zoomButton.disableProperty().bind(disableControls);
         resetZoomButton.disableProperty().bind(chart.isAutoZooming);
 
-
-        add(zoomButton, 0, 3, 3, 1);
-
-        add(resetZoomButton, 0, 4, 3, 1);
-
-        add(prepareToZoomButton, 0, 5, 3, 1);
+        HBox hb = new HBox();
+        hb.getChildren().addAll(resetButton, saveButton, zoomButton, resetZoomButton, prepareToZoomButton);
+        hb.setSpacing(10);
+        add(hb, 0, 1);
     }
 
 
